@@ -3,3 +3,6 @@ export enum BoardState {
     White,
     Empty,
 }
+
+export const cols = 15;
+export const rows = 15;

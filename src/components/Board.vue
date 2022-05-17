@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BoardState } from "../gobang";
+import { BoardState, cols, rows } from "../gobang";
 
 defineProps<{
     state: BoardState;
@@ -17,8 +17,8 @@ defineProps<{
                 'position:absolute',
                 'background:black',
                 'height:2',
-                `width:${y == 0 || y == 18 ? 50 : 100}%`,
-                `left:${y == 0 ? 50 : 0}%`,
+                `width:${y === 0 || y === rows - 1 ? 50 : 100}%`,
+                `left:${y === 0 ? 50 : 0}%`,
             ]"
         ></div>
         <div
@@ -26,18 +26,18 @@ defineProps<{
                 'position:absolute',
                 'background:black',
                 'width:2',
-                `height:${x == 0 || x == 18 ? 50 : 100}%`,
-                `top:${x == 0 ? 50 : 0}%`,
+                `height:${x === 0 || x === cols - 1 ? 50 : 100}%`,
+                `top:${x === 0 ? 50 : 0}%`,
             ]"
         ></div>
 
         <div
-            v-if="state == BoardState.Black"
-            class="background:black border-radius:100% width:60% height:60% width:50%@md height:50%@md"
+            v-if="state === BoardState.Black"
+            class="background:black border-radius:100% width:70% height:70% width:60%@md height:60%@md"
         ></div>
         <div
-            v-else-if="state == BoardState.White"
-            class="background:white border-radius:100% width:60% height:60% width:50%@md height:50%@md"
+            v-else-if="state === BoardState.White"
+            class="background:white border-radius:100% width:70% height:70% width:60%@md height:60%@md"
         ></div>
     </div>
 </template>
