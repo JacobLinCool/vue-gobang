@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
     <div
-        class="display:inline-flex font:6 background:gold-76 justify-content:center align-items:center transition:all;0.25s background:gold-84:hover"
+        class="display:inline-flex font:6 background:gold-76 justify-content:center align-items:center transition:all;0.25s background:gold-84:hover border-radius:8px:hover"
     >
         <div
             :class="[
@@ -33,11 +33,11 @@ defineProps<{
 
         <div
             v-if="state == BoardState.Black"
-            class="background:black border-radius:100% width:40% height:40%"
+            class="background:black border-radius:100% width:60% height:60% width:50%@md height:50%@md"
         ></div>
         <div
             v-else-if="state == BoardState.White"
-            class="background:white border-radius:100% width:40% height:40%"
+            class="background:white border-radius:100% width:60% height:60% width:50%@md height:50%@md"
         ></div>
     </div>
 </template>

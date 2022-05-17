@@ -130,11 +130,13 @@ function check() {
             GitHub
         </a>
     </div>
-    <div class="height:calc(100%-3rem) width:100% display:flex flex-direction:row">
+    <div class="height:calc(100%-3rem) width:100% display:flex flex:col flex:row@md">
         <div
-            class="width:calc(100vmin-3rem) height:calc(100vmin-3rem) display:flex justify-content:center align-items:center"
+            class="width:100vmin height:100vmin width:calc(100vmin-3rem)@md height:calc(100vmin-3rem)@md display:flex justify-content:center align-items:center"
         >
-            <div class="width:90% height:90% display:grid grid-cols:19 grid-rows:19">
+            <div
+                class="width:90% height:90% display:grid grid-cols:19 grid-rows:19 background:gold-76"
+            >
                 <Board
                     v-for="(state, i) in board"
                     :key="i"
