@@ -1,60 +1,27 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
-import "@master/css";
-import "@master/normal.css";
-import "@master/keyframes.css";
-import Board from "./components/Board.vue";
+import Game from "./components/Game.vue";
 import { download } from "./download";
-import { BoardState, check_winner, cols, rows } from "./gobang";
+import { BoardState, cols } from "./gobang";
 
-const board = reactive(Array.from({ length: cols * rows }, () => BoardState.Empty));
-const ui_state = reactive(
-    Array.from({ length: cols * rows }, () => ({ selected: false, marked: false })),
-);
-const logs = reactive<{ x: number; y: number; state: BoardState }[]>([]);
-
-const current = ref(BoardState.Black);
-const status = reactive({ winner: BoardState.Empty, stones: <number[]>[] });
+const logs = reactive<{ x: number; y: number; color: BoardState }[]>([]);
 const logs_elm = ref<HTMLDivElement | null>();
 
-function set(x: number, y: number, state: BoardState, swap = true) {
-    if (status.winner !== BoardState.Empty) {
-        alert(
-            `Game is over, ${
-                status.winner === BoardState.Black ? "Black" : "White"
-            } is the winner.`,
-        );
-        return;
-    }
-    if (board[y * cols + x] === BoardState.Empty) {
-        board[y * cols + x] = state;
-        if (swap) {
-            current.value =
-                current.value === BoardState.Black ? BoardState.White : BoardState.Black;
-        }
-        log({ x, y, state });
+const ui = ref<{ selected: boolean; marked: boolean }[]>([]);
+const key = ref(Date.now());
 
-        console.time("check_winner");
-        const checked = check_winner(board);
-        [status.winner, status.stones] = [checked.winner, checked.stones];
-        console.timeEnd("check_winner");
-
-        if (status.winner !== BoardState.Empty) {
-            for (const stone of status.stones) {
-                ui_state[stone].marked = true;
-            }
-
-            setTimeout(
-                () => alert(`${status.winner === BoardState.Black ? "Black" : "White"} wins!`),
-                10,
-            );
-        }
-    }
+function log({ x, y, color }: { x: number; y: number; color: BoardState }) {
+    logs.push({ x, y, color });
+    setTimeout(() => logs_elm.value?.scrollTo({ top: -999_999_999, behavior: "smooth" }), 10);
 }
 
-function log({ x, y, state }: { x: number; y: number; state: BoardState }) {
-    logs.push({ x, y, state });
-    setTimeout(() => logs_elm.value?.scrollTo({ top: -999_999_999, behavior: "smooth" }), 10);
+function say(msg: string) {
+    setTimeout(() => alert(msg), 10);
+}
+
+function clear() {
+    key.value = Date.now();
+    logs.splice(0, logs.length);
 }
 </script>
 
@@ -73,19 +40,29 @@ function log({ x, y, state }: { x: number; y: number; state: BoardState }) {
         <div
             class="width:100vmin height:100vmin width:calc(100vmin-3rem)@md height:calc(100vmin-3rem)@md display:flex justify-content:center align-items:center"
         >
-            <div :class="`width:90% height:90% display:grid grid-cols:${cols} background:gold-76`">
-                <Board
-                    v-for="(state, i) in board"
-                    :key="i"
-                    :state="state"
-                    :x="i % cols"
-                    :y="Math.floor(i / cols)"
-                    :selected="ui_state[i].selected"
-                    :marked="ui_state[i].marked"
-                    @click="set(i % cols, Math.floor(i / cols), current)"
-                    @mouseenter="ui_state[i].selected = true"
-                    @mouseleave="ui_state[i].selected = false"
-                    :class="[`cursor:${state === BoardState.Empty ? 'pointer' : 'not-allowed'}`]"
+            <div class="width:90% height:90%">
+                <Game
+                    :key="key"
+                    :ui="ui"
+                    @init="
+                        (payload) => {
+                            ui = payload.ui;
+                        }
+                    "
+                    @set="
+                        ({ stone }) => {
+                            log(stone);
+                        }
+                    "
+                    @over="
+                        ({ winner }) => {
+                            say(
+                                `Game over. ${
+                                    winner.color === BoardState.White ? 'White' : 'Black'
+                                } wins!`,
+                            );
+                        }
+                    "
                 />
             </div>
         </div>
@@ -98,9 +75,14 @@ function log({ x, y, state }: { x: number; y: number; state: BoardState }) {
                 <h1>
                     Logs
                     <span
-                        class="ml-4 cursor:pointer font:1rem color:gold-84 color:gold-72:hover transition:all;0.2s"
-                        @click="download(JSON.stringify(logs, null, 2), 'logs.json')"
+                        class="ml:4 cursor:pointer font:1rem color:gold-84 color:gold-72:hover transition:all;0.2s"
+                        @click="download(JSON.stringify(logs, null, 2), `logs-${key}.json`)"
                         >Download</span
+                    >
+                    <span
+                        class="ml:8 cursor:pointer font:1rem color:gold-84 color:gold-72:hover transition:all;0.2s"
+                        @click="clear"
+                        >Clear</span
                     >
                 </h1>
                 <div
@@ -111,11 +93,11 @@ function log({ x, y, state }: { x: number; y: number; state: BoardState }) {
                         v-for="(log, i) in logs"
                         :key="i"
                         class="my:8 font-family:monospace"
-                        @mouseenter="ui_state[log.y * cols + log.x].selected = true"
-                        @mouseleave="ui_state[log.y * cols + log.x].selected = false"
+                        @mouseenter="ui[log.y * cols + log.x].selected = true"
+                        @mouseleave="ui[log.y * cols + log.x].selected = false"
                     >
                         {{ i + 1 }}.
-                        {{ log.state === BoardState.Black ? "●" : "○" }}
+                        {{ log.color === BoardState.Black ? "●" : "○" }}
                         <span class="font:bold">{{ log.x + 1 }},{{ log.y + 1 }}</span>
                     </div>
                 </div>
