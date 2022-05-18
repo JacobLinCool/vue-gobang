@@ -1,18 +1,20 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@master/css': ^1.15.0
+  '@master/css': ^1.15.1
+  '@master/keyframes.css': ^1.2.2
   '@master/normal.css': ^1.9.3
   '@trivago/prettier-plugin-sort-imports': ^3.2.0
   '@vitejs/plugin-vue': ^2.3.3
   prettier: ^2.6.2
-  typescript: ^4.5.4
+  typescript: ^4.6.4
   vite: ^2.9.9
-  vue: ^3.2.25
-  vue-tsc: ^0.34.7
+  vue: ^3.2.33
+  vue-tsc: ^0.34.15
 
 dependencies:
-  '@master/css': 1.15.0
+  '@master/css': 1.15.1
+  '@master/keyframes.css': 1.2.2
   '@master/normal.css': 1.9.3
   vue: 3.2.33
 
@@ -47,10 +49,10 @@ packages:
       '@babel/helper-compilation-targets': 7.17.10_@babel+core@7.13.10
       '@babel/helper-module-transforms': 7.17.12
       '@babel/helpers': 7.17.9
-      '@babel/parser': 7.17.12
+      '@babel/parser': 7.14.6
       '@babel/template': 7.16.7
       '@babel/traverse': 7.13.0
-      '@babel/types': 7.17.12
+      '@babel/types': 7.13.0
       convert-source-map: 1.8.0
       debug: 4.3.4
       gensync: 1.0.0-beta.2
@@ -65,7 +67,7 @@ packages:
   /@babel/generator/7.13.9:
     resolution: {integrity: sha512-mHOOmY0Axl/JCTkxTU6Lf5sWOg/v8nUa+Xkt4zMTftX0wqmb6Sh7J8gvcehBw7q0AhrhAR+FDacKjCZ2X8K+Sw==}
     dependencies:
-      '@babel/types': 7.17.12
+      '@babel/types': 7.13.0
       jsesc: 2.5.2
       source-map: 0.5.7
     dev: true
@@ -185,7 +187,7 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
-      '@babel/types': 7.17.12
+      '@babel/types': 7.13.0
     dev: true
 
   /@babel/parser/7.17.12:
@@ -211,8 +213,8 @@ packages:
       '@babel/generator': 7.13.9
       '@babel/helper-function-name': 7.17.9
       '@babel/helper-split-export-declaration': 7.16.7
-      '@babel/parser': 7.17.12
-      '@babel/types': 7.17.12
+      '@babel/parser': 7.14.6
+      '@babel/types': 7.13.0
       debug: 4.3.4
       globals: 11.12.0
       lodash: 4.17.21
@@ -283,8 +285,12 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.13
     dev: true
 
-  /@master/css/1.15.0:
-    resolution: {integrity: sha512-S5oqdxDyIRKNBfIv/N+DRTxpK/BUBqNu6yp5o7MtOHebeK3ZOzpH49cg5hLL1DGdsckzzHU8GDdJLO6ws65ZJw==}
+  /@master/css/1.15.1:
+    resolution: {integrity: sha512-fLI61yzfNNBlS7woztkZVJTeJEjqDdGunVxyYm9pRuuhpndavIAYN0M8TUlxnejuCM+Rnq6KXdC8XCAu7GlUOg==}
+    dev: false
+
+  /@master/keyframes.css/1.2.2:
+    resolution: {integrity: sha512-hRCsf0fiY4NYruIGCZWlCvaFa++7L16sVwa66JtWZdFEGwGvVwudRwemCC0DQkcZqS61YS8o5PEuRyaFags8Yw==}
     dev: false
 
   /@master/normal.css/1.9.3:
