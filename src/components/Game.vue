@@ -35,7 +35,7 @@ const turn = ref(0);
 const current = ref(BoardState.Black);
 const winner = reactive({ color: BoardState.Empty, stones: <number[]>[] });
 
-function set(x: number, y: number, state: BoardState, swap = true) {
+ function set(x: number, y: number, state: BoardState, swap = true) {
     if (winner.color !== BoardState.Empty) {
         emit("over", { board, turn: turn.value, current: current.value, winner });
         return;
@@ -75,10 +75,12 @@ function set(x: number, y: number, state: BoardState, swap = true) {
 }
 
 emit("init", { board, turn: turn.value, current: current.value, winner, ui });
+
+defineExpose({ ui, set });
 </script>
 
 <template>
-    <div :class="`width:100% height:100% display:grid grid-cols:${cols} background:gold-76`">
+    <div :class="`width:100% height:100% d:grid grid-cols:${cols} background:gold-76`">
         <Board
             v-for="(state, i) in board"
             :key="i"

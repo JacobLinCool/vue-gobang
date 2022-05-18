@@ -18,5 +18,5 @@ A Gobang (Gomoku) game.
 - [x] Play
 - [x] Log
 - [x] Save
-- [ ] Re-play
+- [x] Re-play
 - [ ] Computer Player
