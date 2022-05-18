@@ -6,6 +6,8 @@ A Gobang (Gomoku) game.
 
 [https://jacoblincool.github.io/vue-gobang/](https://jacoblincool.github.io/vue-gobang/)
 
+![screenshot](./public/screenshot.png)
+
 ## Tech Stack
 
 - [Vue 3](https://vuejs.org/)
