@@ -13,7 +13,7 @@ defineProps<{
 <template>
     <div
         :class="[
-            'display:inline-flex',
+            'd:inline-flex',
             'justify-content:center',
             'align-items:center',
             'transition:all;0.25s',
