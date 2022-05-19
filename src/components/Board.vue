@@ -41,7 +41,7 @@ defineProps<{
             ]"
         ></div>
         <div
-            v-if="(x + 1) % 4 === 0 && (y + 1) % 4 === 0"
+            v-if="(x + 1) % 4 === 0 && (y + 1) % 4 === 0 && ((x + y + 2) / 4) % 2 === 0"
             :class="['position:absolute', 'background:black', 'width:25%', 'height:25%', 'r:100%']"
         ></div>
 
