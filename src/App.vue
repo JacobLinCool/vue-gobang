@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import IonDownloadOutline from "~icons/ion/download-outline";
+import IonIosRadio from "~icons/ion/ios-radio";
 import IonPlayOutline from "~icons/ion/play-outline";
 import IonReloadOutline from "~icons/ion/reload-outline";
 import Game from "./components/Game.vue";
 import { download } from "./download";
 import { BoardState, cols } from "./gobang";
+import { ws } from "./ws";
 
 const logs = reactive<{ x: number; y: number; color: BoardState }[]>([]);
 const logs_elm = ref<HTMLDivElement | null>();
@@ -56,6 +58,34 @@ function replay() {
     file.click();
     file.remove();
 }
+
+async function connect() {
+    const server = prompt("Server:", "ws://localhost:8080");
+    if (!server) {
+        return;
+    }
+
+    ws.value = new WebSocket(server);
+    ws.value.addEventListener("message", (event) => {
+        try {
+            const data = JSON.parse(event.data);
+            if (data.type === "set-start") {
+                clear();
+                const { set } = data.payload;
+                console.log(set.board);
+            } else if (data.type === "set-update") {
+                const { color, position } = data.payload;
+                if (game.value) {
+                    game.value.set(...position, color);
+                }
+            } else if (data.type === "hello") {
+                console.log("spectators", data.payload.spectators);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    });
+}
 </script>
 
 <template>
@@ -84,11 +114,13 @@ function replay() {
                     "
                     @over="
                         ({ winner }) => {
-                            say(
-                                `Game over. ${
-                                    winner.color === BoardState.White ? 'White' : 'Black'
-                                } wins!`,
-                            );
+                            if (ws === null) {
+                                say(
+                                    `Game over. ${
+                                        winner.color === BoardState.White ? 'White' : 'Black'
+                                    } wins!`,
+                                );
+                            }
                         }
                     "
                 />
@@ -122,6 +154,13 @@ function replay() {
                         title="replay a game from a JSON file"
                     >
                         <IonPlayOutline class="d:inline @heart;1s;1:hover" />
+                    </span>
+                    <span
+                        class="ml:16 top:2 cursor:pointer font:1.2rem color:gold-84 color:gold-72:hover transition:all;0.2s"
+                        @click="connect"
+                        title="connect to a remote competition server"
+                    >
+                        <IonIosRadio class="d:inline @heart;1s;1:hover" />
                     </span>
                 </h2>
                 <div

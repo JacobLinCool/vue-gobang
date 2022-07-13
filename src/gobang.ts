@@ -1,7 +1,7 @@
 export enum BoardState {
+    Empty,
     Black,
     White,
-    Empty,
 }
 
 export const cols = 15;
